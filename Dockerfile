@@ -6,8 +6,8 @@ ENV        BANNER_TEXT="" \
 
 RUN        mkdir ${NIFI_HOME}/ca_trust_anchors
 
-COPY       start_nifi.sh ${NIFI_HOME}/
-           nars/* ${NIFI_HOME}/lib/
+COPY       start_nifi.sh ${NIFI_HOME}/ \
+           nars/* ${NIFI_HOME}/lib/ \
            ca_trust_anchors/* ${NIFI_HOME}/ca_trust_anchors
 
 RUN        bash -c '/docker-java-home/jre/lib/security/keytool -import -trustcacerts -keystore cacerts -storepass changeit -noprompt -alias devoncert -file ${NIFI_HOME}/ca_trust_anchors/*'
