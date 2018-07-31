@@ -4,7 +4,7 @@ set -e
 
 do_site2site_configure() {
   if [ -z "$S2S_PORT" ]; then S2S_PORT=2881; fi
-  sed -i "s/nifi\.remote\.input\.host=.*/nifi.remote.input.host=${HOSTNAME}/g" ${NIFI_HOME}/conf/nifi.properties
+  sed -i "s/nifi\.remote\.input\.host=.*/nifi.remote.input.host=`hostname -f`/g" ${NIFI_HOME}/conf/nifi.properties
   sed -i "s/nifi\.remote\.input\.socket\.port=.*/nifi.remote.input.socket.port=${S2S_PORT}/g" ${NIFI_HOME}/conf/nifi.properties
   sed -i "s/nifi\.remote\.input\.secure=true/nifi.remote.input.secure=false/g" ${NIFI_HOME}/conf/nifi.properties
 }
@@ -16,7 +16,7 @@ do_cluster_node_configure() {
   sed -i "s/clientPort=.*/clientPort=${ZK_CLIENT_PORT}/g" ${NIFI_HOME}/conf/zookeeper.properties
   ZK_CONNECT_STRING=$(echo $ZK_NODES | sed -e "s/,/:${ZK_CLIENT_PORT},/g" -e "s/$/:${ZK_CLIENT_PORT}/g")
 
-  sed -i "s/nifi\.web\.http\.host=.*/nifi.web.http.host=${HOSTNAME}/g" ${NIFI_HOME}/conf/nifi.properties
+  sed -i "s/nifi\.web\.http\.host=.*/nifi.web.http.host=`hostname -f`/g" ${NIFI_HOME}/conf/nifi.properties
   sed -i "s/nifi\.cluster\.protocol\.is\.secure=true/nifi.cluster.protocol.is.secure=false/g" ${NIFI_HOME}/conf/nifi.properties
   sed -i "s/nifi\.cluster\.is\.node=false/nifi.cluster.is.node=true/g" ${NIFI_HOME}/conf/nifi.properties
   sed -i "s/nifi\.cluster\.node\.address=.*/nifi.cluster.node.address=`hostname -f`/g" ${NIFI_HOME}/conf/nifi.properties
@@ -41,7 +41,7 @@ do_cluster_node_configure() {
   if [ -z "$ZK_MONITOR_PORT" ]; then ZK_MONITOR_PORT=2888; fi
   if [ -z "$ZK_ELECTION_PORT" ]; then ZK_ELECTION_PORT=3888; fi
   sed -i "/^server\./,$ d" ${NIFI_HOME}/conf/zookeeper.properties
-  srv=1; IFS=","; for node in $ZK_NODES; do sed -i "\$aserver.$srv=$node:${ZK_MONITOR_PORT}:${ZK_ELECTION_PORT}" ${NIFI_HOME}/conf/zookeeper.properties; let "srv+=1"; done
+  srv=1; IFS=","; for node in $ZK_NODES; do sed -i "\$aserver.$srv=$node:${ZK_MONITOR_PORT}:${ZK_ELECTION_PORT}" ${NIFI_HOME}/conf/zookeeper.properties; srv=$((srv+1)); done
 }
 
 sed -i "s/nifi\.ui\.banner\.text=.*/nifi.ui.banner.text=${BANNER_TEXT}/g" ${NIFI_HOME}/conf/nifi.properties
