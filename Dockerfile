@@ -1,4 +1,4 @@
-FROM       apache/nifi:1.4.0
+FROM       apache/nifi:1.7.1
 MAINTAINER Tyler Gregory <tdgregory@protonmail.com>
 
 USER       root
