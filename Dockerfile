@@ -3,9 +3,6 @@ MAINTAINER Tyler Gregory <tdgregory@protonmail.com>
 
 USER       root
 
-ENV        BANNER_TEXT="" \
-           S2S_PORT=""
-
 RUN        mkdir -p ${NIFI_HOME}/ca_trust_anchors 
 
 COPY       start_nifi.sh ${NIFI_HOME}/ 
@@ -24,7 +21,3 @@ VOLUME     /opt/datafiles \
            ${NIFI_HOME}/database_repository \
            ${NIFI_HOME}/content_repository \
            ${NIFI_HOME}/provenance_repository
-
-WORKDIR    ${NIFI_HOME}
-
-EXPOSE     8080 8443 8081 10000

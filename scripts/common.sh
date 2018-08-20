@@ -27,3 +27,5 @@ prop_replace () {
 export nifi_props_file=${NIFI_HOME}/conf/nifi.properties
 export nifi_toolkit_props_file=${HOME}/.nifi-cli.nifi.properties
 export hostname=$(hostname)
+
+export fqdn=$(hostname -f)
