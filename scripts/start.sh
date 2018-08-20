@@ -60,6 +60,17 @@ case ${AUTH} in
         . "${scripts_dir}/secure.sh"
         . "${scripts_dir}/update_login_providers.sh"
         ;;
+    oidc)
+        echo 'Enabling OpenId Connect user authentication'
+        prop_replace 'nifi.security.user.oidc.discovery.url'            "${NIFI_OIDC_DISCOVERY_URL}:-"
+        prop_replace 'nifi.security.user.oidc.connect.timeout'          "${NIFI_OIDC_CONNECT_TIMEOUT:-5 secs}"
+        prop_replace 'nifi.security.user.oidc.read.timeout'             "${NIFI_OIDC_READ_TIMEOUT:-5 secs}"
+        prop_replace 'nifi.security.user.oidc.client.id'                "${NIFI_OIDC_CLIENT_ID}:-"
+        prop_replace 'nifi.security.user.oidc.client.secret'            "${NIFI_OIDC_CLIENT_SECRET}:-"
+        prop_replace 'nifi.security.user.oidc.preferred.jwsalgorithm'   "${NIFI_OIDC_JWS_ALGORITHM}:-"
+
+        . "${scripts_dir}/secure.sh"
+        ;;
     *)
         if [ ! -z "${NIFI_WEB_PROXY_HOST}" ]; then
             echo 'NIFI_WEB_PROXY_HOST was set but NiFi is not configured to run in a secure mode.  Will not update nifi.web.proxy.host.'

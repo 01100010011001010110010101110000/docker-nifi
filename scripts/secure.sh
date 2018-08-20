@@ -58,11 +58,11 @@ prop_replace 'truststorePasswd'   "${TRUSTSTORE_PASSWORD}"              ${nifi_t
 prop_replace 'nifi.web.http.port'   ''
 prop_replace 'nifi.web.http.host'   ''
 prop_replace 'nifi.web.https.port'  "${NIFI_WEB_HTTPS_PORT:-8443}"
-prop_replace 'nifi.web.https.host'  "${NIFI_WEB_HTTPS_HOST:-$HOSTNAME}"
+prop_replace 'nifi.web.https.host'  "${NIFI_WEB_HTTPS_HOST:-$fqdn}"
 prop_replace 'nifi.remote.input.secure' 'true'
 
 # Setup nifi-toolkit
-prop_replace 'baseUrl' "https://${NIFI_WEB_HTTPS_HOST:-$HOSTNAME}:${NIFI_WEB_HTTPS_PORT:-8443}" ${nifi_toolkit_props_file}
+prop_replace 'baseUrl' "https://${NIFI_WEB_HTTPS_HOST:-$fqdn}:${NIFI_WEB_HTTPS_PORT:-8443}" ${nifi_toolkit_props_file}
 
 # Check if the user has specified a nifi.web.proxy.host setting and handle appropriately
 if [ -z "${NIFI_WEB_PROXY_HOST}" ]; then
