@@ -10,7 +10,8 @@ RUN        mkdir -p ${NIFI_HOME}/ca_trust_anchors
 
 COPY       start_nifi.sh ${NIFI_HOME}/ 
 COPY       nars/* ${NIFI_HOME}/lib/ 
-COPY       ca_trust_anchors/* ${NIFI_HOME}/ca_trust_anchors/ 
+COPY       ca_trust_anchors/* ${NIFI_HOME}/ca_trust_anchors/
+COPY       scripts/* ${NIFI_BASE_DIR}/scripts/
 
 RUN        cd /docker-java-home/jre/lib/security
 RUN        /bin/bash -c "keytool -import -trustcacerts -keystore cacerts -storepass changeit -noprompt -alias devoncert -file ${NIFI_HOME}/ca_trust_anchors/*"
@@ -26,6 +27,4 @@ VOLUME     /opt/datafiles \
 
 WORKDIR    ${NIFI_HOME}
 
-expose     8080 8443 8081
-
-ENTRYPOINT ["./start_nifi.sh"]
+EXPOSE     8080 8443 8081 10000
